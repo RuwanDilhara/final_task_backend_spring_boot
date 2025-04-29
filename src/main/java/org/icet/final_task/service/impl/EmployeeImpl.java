@@ -1,50 +1,75 @@
 package org.icet.final_task.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.icet.final_task.dto.Employee;
+import org.icet.final_task.entity.EmployeeEntity;
+import org.icet.final_task.repository.EmployeeRepository;
 import org.icet.final_task.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeImpl implements EmployeeService {
+
+    final EmployeeRepository repository;
+    final ModelMapper mapper;
+
     @Override
     public List<Employee> getAll() {
-        return List.of();
+        return repository.findAll().stream().map(entity ->
+                mapper.map(entity, Employee.class)
+        ).toList();
     }
 
     @Override
     public Employee getById(Integer id) {
-        return null;
+        return repository.findById(id).map(entity ->
+                mapper.map(entity, Employee.class)
+        ).orElse(null);
     }
 
     @Override
     public Employee getByEmail(String email) {
-        return null;
+       return mapper.map(repository.findByEmail(email), Employee.class);
     }
 
     @Override
     public Employee create(Employee employee) {
-        return null;
+        return mapper.map(repository.save(mapper
+                .map(employee, EmployeeEntity.class)),Employee.class);
     }
 
     @Override
     public Employee update(Employee employee) {
-        return null;
+        return mapper.map(repository.save(mapper
+                .map(employee, EmployeeEntity.class)),Employee.class);
     }
 
     @Override
     public boolean deleteById(Integer id) {
+        Employee exitsById = getById(id);
+
+        if (exitsById != null){
+            repository.deleteById(id);
+            return true;
+        }
         return false;
     }
 
     @Override
     public List<Employee> getByDepartment(String department) {
-        return List.of();
+        return repository.findByDepartment(department).stream().map(entity ->
+                mapper.map(entity, Employee.class)
+        ).toList();
     }
 
     @Override
     public List<Employee> getByName(String name) {
-        return List.of();
+        return repository.findByName(name).stream().map(entity ->
+                mapper.map(entity, Employee.class)
+        ).toList();
     }
 }
