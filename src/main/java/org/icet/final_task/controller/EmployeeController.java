@@ -48,7 +48,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Employee> update(@Valid @RequestBody Employee employee){
+    public ResponseEntity<Employee> update( @RequestBody Employee employee){
         return ResponseEntity.status(HttpStatus.OK).body(service.update(employee));
     }
 

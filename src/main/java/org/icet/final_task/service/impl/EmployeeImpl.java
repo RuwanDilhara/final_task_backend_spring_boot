@@ -1,8 +1,8 @@
 package org.icet.final_task.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.icet.final_task.config.exceptionHandling.EmailAlreadyExistsException;
-import org.icet.final_task.config.exceptionHandling.IdAlreadyNotExitsException;
+import org.icet.final_task.exceptionHandling.EmailAlreadyExistsException;
+import org.icet.final_task.exceptionHandling.IdAlreadyNotExitsException;
 import org.icet.final_task.dto.Employee;
 import org.icet.final_task.entity.EmployeeEntity;
 import org.icet.final_task.repository.EmployeeRepository;

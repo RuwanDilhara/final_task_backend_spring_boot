@@ -1,4 +1,4 @@
-package org.icet.final_task.config.exceptionHandling;
+package org.icet.final_task.exceptionHandling;
 
 public class IdAlreadyNotExitsException extends RuntimeException {
 
