@@ -2,7 +2,9 @@ package org.icet.final_task.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,11 +25,13 @@ public class EmployeeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Pattern(regexp = "^[A-Za-z\\s]{1,100}$")
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @Column(nullable = false,unique = true)
-    @Email
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email is required")
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false)
