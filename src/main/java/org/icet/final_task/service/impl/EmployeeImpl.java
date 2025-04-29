@@ -1,6 +1,8 @@
 package org.icet.final_task.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.icet.final_task.config.exceptionHandling.EmailAlreadyExistsException;
+import org.icet.final_task.config.exceptionHandling.IdAlreadyNotExitsException;
 import org.icet.final_task.dto.Employee;
 import org.icet.final_task.entity.EmployeeEntity;
 import org.icet.final_task.repository.EmployeeRepository;
@@ -37,13 +39,21 @@ public class EmployeeImpl implements EmployeeService {
     }
 
     @Override
-    public Employee create(Employee employee) {
+    public Employee create(Employee employee){
+        if (repository.findByEmail(employee.getEmail()) != null){
+            throw new EmailAlreadyExistsException("Email already exists" +employee.getEmail());
+        }
         return mapper.map(repository.save(mapper
-                .map(employee, EmployeeEntity.class)),Employee.class);
+                .map(employee, EmployeeEntity.class)), Employee.class);
+
     }
 
     @Override
     public Employee update(Employee employee) {
+        Employee byId = getById(employee.getId());
+        if (byId == null){
+            throw new IdAlreadyNotExitsException("Id already not exist" +employee.getId());
+        }
         return mapper.map(repository.save(mapper
                 .map(employee, EmployeeEntity.class)),Employee.class);
     }
@@ -55,8 +65,9 @@ public class EmployeeImpl implements EmployeeService {
         if (exitsById != null){
             repository.deleteById(id);
             return true;
+        }else {
+            throw new IdAlreadyNotExitsException("Id already not exist" +id);
         }
-        return false;
     }
 
     @Override
